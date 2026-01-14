@@ -72,7 +72,7 @@ const updateCategory = async (req, res) => {
     }
 
     if (typeof name !== 'string') {
-      return res.status(400).send('Incorect data type');
+      return res.status(400).send('Incorrect data type');
     }
 
     await serviceCategory.updateCategory(id, { name });

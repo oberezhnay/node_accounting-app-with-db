@@ -26,11 +26,12 @@ const getAllExpenses = async (req, res) => {
 const getExpenseById = async (req, res) => {
   try {
     const id = Number(req.params.id);
-    const expense = await serviceExpense.getExpenseById(id);
 
     if (!id) {
       return res.status(400).send('Id parameter is required');
     }
+
+    const expense = await serviceExpense.getExpenseById(id);
 
     if (!expense) {
       return res.status(404).send('Expense with this id does not exist');
@@ -92,24 +93,22 @@ const deleteExpense = async (req, res) => {
 const updateExpense = async (req, res) => {
   try {
     const id = Number(req.params.id);
-    const data = req.body;
-    const expense = await serviceExpense.getExpenseById(id);
 
     if (Number.isNaN(id)) {
       return res.status(400).send('Id parameter is invalid');
     }
 
-    if (!expense) {
-      return res.status(404).send('Expense with this id does not exist');
-    }
+    const data = req.body;
 
     if (!req.body || Object.keys(req.body).length === 0) {
       return res.status(400).send('Empty body');
     }
 
-    // if (Number.isNaN(id)) {
-    //   return res.status(400).send('Invalid id');
-    // }
+    const expense = await serviceExpense.getExpenseById(id);
+
+    if (!expense) {
+      return res.status(404).send('Expense with this id does not exist');
+    }
 
     const check = ['userId', 'spentAt', 'title', 'amount', 'category', 'note'];
     const hasToUpdate = check.some((field) => data[field] !== undefined);
